@@ -1,4 +1,4 @@
-# CLAUDE.md — moto-hil-bench
+# CLAUDE.md — vehicle-hil-bench
 
 @.claude/PLATFORM-RULES.md
 
@@ -20,11 +20,11 @@ The DUT sees two CAN buses: the **vehicle bus** (the simulated CL250 ECU answers
 
 ## Independence principle (why STM32F4, not the DUT's chip)
 
-The simulator must **not be the same chip** as the device under test (DUT — `moto-rt-core`/`moto-connectivity-node`). Otherwise both share the same library/blind spot, and the test can't catch the bug. The simulator is STM32F4, the main vehicle MCU is the STM32H755 (M7 rt-core, M4 safety partition, D-072)/ESP32-S3 — a different class, same family (keeps the vehicle chain familiar). The M4 has no CAN: safety-partition scenarios run with an M7 forwarder test image that copies the HIL's 0x020/0x022/0x081 frames into the mailbox; it is a separate build target that a release image never contains (D-072 item 8). If a suggestion comes in to change this decision, ask the user.
+The simulator must **not be the same chip** as the device under test (DUT — `vehicle-rt-core`/`vehicle-connectivity-node`). Otherwise both share the same library/blind spot, and the test can't catch the bug. The simulator is STM32F4, the main vehicle MCU is the STM32H755 (M7 rt-core, M4 safety partition, D-072)/ESP32-S3 — a different class, same family (keeps the vehicle chain familiar). The M4 has no CAN: safety-partition scenarios run with an M7 forwarder test image that copies the HIL's 0x020/0x022/0x081 frames into the mailbox; it is a separate build target that a release image never contains (D-072 item 8). If a suggestion comes in to change this decision, ask the user.
 
 ## Dependencies
 
-Reads CAN schema/VSS definitions from `moto-vehicle-defs` (submodule: `external/moto-vehicle-defs`, pinned to a tag; generated code at `external/moto-vehicle-defs/gen/c/<node>/`). Watch the version pin — when `moto-vehicle-defs` is updated, the submodule reference here does not advance automatically; it requires a deliberate update.
+Reads CAN schema/VSS definitions from `vehicle-defs` (submodule: `external/vehicle-defs`, pinned to a tag; generated code at `external/vehicle-defs/gen/c/<node>/`). Watch the version pin — when `vehicle-defs` is updated, the submodule reference here does not advance automatically; it requires a deliberate update.
 
 ## Test/build
 
@@ -39,12 +39,12 @@ Reads CAN schema/VSS definitions from `moto-vehicle-defs` (submodule: `external/
 
 ## Out of scope (does not belong in this repo)
 
-- The vehicle's main MCU firmware (that's in `moto-rt-core`/`moto-connectivity-node`)
+- The vehicle's main MCU firmware (that's in `vehicle-rt-core`/`vehicle-connectivity-node`)
 - ECU flash writing/stage mapping — never, under any circumstances
 
 ## Context
 
-Full HIL hardware architecture: `../moto-vehicle-defs/docs/ARCHITECTURE.md` (summary) · detail: `../moto-vehicle-defs/docs/hardware-architecture.md` (section index in `docs/README.md`) section 9b. For the scenario format and test catalog, also see the vehicle work plan (`../moto-vehicle-defs/docs/vehicle-work-plan.md`, section 7).
+Full HIL hardware architecture: `../vehicle-defs/docs/ARCHITECTURE.md` (summary) · detail: `../vehicle-defs/docs/hardware-architecture.md` (section index in `docs/README.md`) section 9b. For the scenario format and test catalog, also see the vehicle work plan (`../vehicle-defs/docs/vehicle-work-plan.md`, section 7).
 
 ## Claude agent
 
